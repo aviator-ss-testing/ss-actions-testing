@@ -1,0 +1,17 @@
+Frontend Configuration File
+This file should trigger @aviator-ss-testing/ss-fe team.
+
+API_BASE_URL=https://api.example.com
+THEME=dark
+ENABLE_ANALYTICS=true
+CACHE_TIMEOUT=300
+MAX_RETRY_ATTEMPTS=3
+
+# Feature flags
+ENABLE_NEW_UI=false
+ENABLE_DARK_MODE=true
+SHOW_BETA_FEATURES=false
+
+# Debugging
+DEBUG_MODE=false
+LOG_LEVEL=info
