@@ -18,6 +18,27 @@ from string_utils import reverse_string, count_vowels, is_palindrome, capitalize
 class TestStringUtils(unittest.TestCase):
     """Test cases for all string utility functions."""
 
+    def setUp(self):
+        """Set up test data for string operations tests."""
+        # Common test strings for reuse across tests
+        self.basic_string = "hello"
+        self.empty_string = ""
+        self.none_value = None
+        self.single_char = "a"
+        self.mixed_case = "Hello World"
+        self.with_spaces = "hello world"
+        self.with_punctuation = "Hello, World!"
+        self.unicode_string = "café"
+        self.emoji_string = "🙂😊🎉"
+        self.numeric_string = "12321"
+        self.palindrome = "racecar"
+        self.non_palindrome = "hello"
+
+        # Invalid input types for error testing
+        self.invalid_int = 123
+        self.invalid_list = []
+        self.invalid_dict = {}
+
     def test_reverse_string_basic(self):
         """Test basic string reversal."""
         self.assertEqual(reverse_string("hello"), "olleh")

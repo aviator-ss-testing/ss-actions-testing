@@ -18,6 +18,22 @@ from math_operations import add, subtract, multiply, divide, power, factorial
 class TestMathOperations(unittest.TestCase):
     """Test cases for all math operations functions."""
 
+    def setUp(self):
+        """Set up test data for math operations tests."""
+        # Common test values for reuse across tests
+        self.positive_int = 5
+        self.negative_int = -3
+        self.positive_float = 2.5
+        self.negative_float = -1.5
+        self.zero = 0
+        self.large_int = 1000
+        self.small_float = 0.001
+
+        # Invalid input types for error testing
+        self.invalid_string = "invalid"
+        self.invalid_none = None
+        self.invalid_list = []
+
     def test_add_positive_numbers(self):
         """Test addition with positive numbers."""
         self.assertEqual(add(2, 3), 5)
