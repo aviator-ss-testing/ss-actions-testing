@@ -2,6 +2,11 @@
 Comprehensive utilities module containing mathematical and string processing functions.
 """
 
+import json
+import csv
+import os
+from pathlib import Path
+
 
 def calculate_factorial(n):
     """
@@ -388,3 +393,280 @@ def calculate_set_difference(set1, set2):
         raise TypeError("Second input must be a set")
 
     return set1.difference(set2)
+
+
+# File Operations Functions
+
+def read_file_lines(file_path):
+    """
+    Read all lines from a file and return them as a list.
+
+    Args:
+        file_path (str): Path to the file to read
+
+    Returns:
+        list: List of lines from the file (with newlines stripped)
+
+    Raises:
+        TypeError: If file_path is not a string
+        FileNotFoundError: If the file doesn't exist
+        IOError: If there's an error reading the file
+    """
+    if not isinstance(file_path, str):
+        raise TypeError("File path must be a string")
+
+    if not file_path.strip():
+        raise ValueError("File path cannot be empty")
+
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            return [line.rstrip('\n\r') for line in file]
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File not found: {file_path}")
+    except IOError as e:
+        raise IOError(f"Error reading file {file_path}: {str(e)}")
+
+
+def write_to_file(file_path, content):
+    """
+    Write content to a file, creating directories if necessary.
+
+    Args:
+        file_path (str): Path to the file to write
+        content (str): Content to write to the file
+
+    Returns:
+        bool: True if successful
+
+    Raises:
+        TypeError: If file_path or content is not a string
+        IOError: If there's an error writing the file
+    """
+    if not isinstance(file_path, str):
+        raise TypeError("File path must be a string")
+    if not isinstance(content, str):
+        raise TypeError("Content must be a string")
+
+    if not file_path.strip():
+        raise ValueError("File path cannot be empty")
+
+    try:
+        # Create parent directories if they don't exist
+        Path(file_path).parent.mkdir(parents=True, exist_ok=True)
+
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(content)
+        return True
+    except IOError as e:
+        raise IOError(f"Error writing to file {file_path}: {str(e)}")
+
+
+def count_file_words(file_path):
+    """
+    Count the number of words in a file.
+
+    Args:
+        file_path (str): Path to the file to analyze
+
+    Returns:
+        int: Number of words in the file
+
+    Raises:
+        TypeError: If file_path is not a string
+        FileNotFoundError: If the file doesn't exist
+        IOError: If there's an error reading the file
+    """
+    if not isinstance(file_path, str):
+        raise TypeError("File path must be a string")
+
+    if not file_path.strip():
+        raise ValueError("File path cannot be empty")
+
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            # Split by whitespace and filter out empty strings
+            words = [word for word in content.split() if word.strip()]
+            return len(words)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File not found: {file_path}")
+    except IOError as e:
+        raise IOError(f"Error reading file {file_path}: {str(e)}")
+
+
+# JSON Functions
+
+def parse_json_string(json_string):
+    """
+    Parse a JSON string and return the resulting Python object.
+
+    Args:
+        json_string (str): JSON string to parse
+
+    Returns:
+        object: Parsed Python object (dict, list, etc.)
+
+    Raises:
+        TypeError: If json_string is not a string
+        ValueError: If json_string is not valid JSON
+    """
+    if not isinstance(json_string, str):
+        raise TypeError("Input must be a string")
+
+    if not json_string.strip():
+        raise ValueError("JSON string cannot be empty")
+
+    try:
+        return json.loads(json_string)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON string: {str(e)}")
+
+
+def validate_json_structure(json_data, required_keys):
+    """
+    Validate that a JSON object contains all required keys.
+
+    Args:
+        json_data (dict): JSON object to validate
+        required_keys (list): List of required key names
+
+    Returns:
+        bool: True if all required keys are present
+
+    Raises:
+        TypeError: If json_data is not a dict or required_keys is not a list
+        ValueError: If any required key is missing
+    """
+    if not isinstance(json_data, dict):
+        raise TypeError("JSON data must be a dictionary")
+    if not isinstance(required_keys, list):
+        raise TypeError("Required keys must be a list")
+
+    if required_keys is None:
+        required_keys = []
+
+    missing_keys = [key for key in required_keys if key not in json_data]
+    if missing_keys:
+        raise ValueError(f"Missing required keys: {missing_keys}")
+
+    return True
+
+
+def extract_json_values(json_data, keys):
+    """
+    Extract specific values from a JSON object by keys.
+
+    Args:
+        json_data (dict): JSON object to extract values from
+        keys (list): List of keys to extract
+
+    Returns:
+        dict: Dictionary containing extracted key-value pairs
+
+    Raises:
+        TypeError: If json_data is not a dict or keys is not a list
+    """
+    if not isinstance(json_data, dict):
+        raise TypeError("JSON data must be a dictionary")
+    if not isinstance(keys, list):
+        raise TypeError("Keys must be a list")
+
+    if json_data is None:
+        json_data = {}
+    if keys is None:
+        keys = []
+
+    return {key: json_data.get(key) for key in keys if key in json_data}
+
+
+# CSV Processing Functions
+
+def parse_csv_data(csv_string, delimiter=','):
+    """
+    Parse CSV data from a string and return as a list of dictionaries.
+
+    Args:
+        csv_string (str): CSV data as a string
+        delimiter (str): Field delimiter (default: comma)
+
+    Returns:
+        list: List of dictionaries representing CSV rows
+
+    Raises:
+        TypeError: If csv_string is not a string
+        ValueError: If CSV data is malformed
+    """
+    if not isinstance(csv_string, str):
+        raise TypeError("CSV string must be a string")
+    if not isinstance(delimiter, str):
+        raise TypeError("Delimiter must be a string")
+
+    if not csv_string.strip():
+        return []
+
+    try:
+        # Split the CSV string into lines
+        lines = csv_string.strip().split('\n')
+        if not lines:
+            return []
+
+        # Use csv.DictReader to parse the data
+        reader = csv.DictReader(lines, delimiter=delimiter)
+        return list(reader)
+    except csv.Error as e:
+        raise ValueError(f"Error parsing CSV data: {str(e)}")
+
+
+def convert_to_csv_format(data, fieldnames=None, delimiter=','):
+    """
+    Convert a list of dictionaries to CSV format string.
+
+    Args:
+        data (list): List of dictionaries to convert
+        fieldnames (list): List of field names (optional, inferred if None)
+        delimiter (str): Field delimiter (default: comma)
+
+    Returns:
+        str: CSV formatted string
+
+    Raises:
+        TypeError: If data is not a list or contains non-dict items
+        ValueError: If data is empty and no fieldnames provided
+    """
+    if not isinstance(data, list):
+        raise TypeError("Data must be a list")
+    if not isinstance(delimiter, str):
+        raise TypeError("Delimiter must be a string")
+
+    if not data:
+        if not fieldnames:
+            return ""
+        # Return just the header if no data but fieldnames provided
+        import io
+        output = io.StringIO()
+        writer = csv.DictWriter(output, fieldnames=fieldnames, delimiter=delimiter)
+        writer.writeheader()
+        return output.getvalue().strip()
+
+    # Validate that all items are dictionaries
+    for item in data:
+        if not isinstance(item, dict):
+            raise TypeError("All data items must be dictionaries")
+
+    # Infer fieldnames if not provided
+    if fieldnames is None:
+        all_keys = set()
+        for item in data:
+            all_keys.update(item.keys())
+        fieldnames = sorted(list(all_keys))
+
+    if fieldnames is None or len(fieldnames) == 0:
+        raise ValueError("No fieldnames available")
+
+    # Convert to CSV format
+    import io
+    output = io.StringIO()
+    writer = csv.DictWriter(output, fieldnames=fieldnames, delimiter=delimiter)
+    writer.writeheader()
+    writer.writerows(data)
+    return output.getvalue().strip()
