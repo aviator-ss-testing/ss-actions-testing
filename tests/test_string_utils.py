@@ -327,5 +327,174 @@ class TestRemoveDuplicates(unittest.TestCase):
             remove_duplicates(['a', 'b', 'c'])
 
 
+class TestMemoryEfficiency(unittest.TestCase):
+    """Test memory efficiency with large datasets."""
+
+    def test_reverse_string_large_dataset(self):
+        """Test reverse_string with large strings."""
+        # Create a large string (1MB)
+        large_string = "a" * (1024 * 1024)
+        result = reverse_string(large_string)
+
+        # Verify correctness
+        self.assertEqual(len(result), len(large_string))
+        self.assertEqual(result[0], "a")
+        self.assertEqual(result[-1], "a")
+
+    def test_count_vowels_large_dataset(self):
+        """Test count_vowels with large strings."""
+        # Create a large string with known vowel count
+        pattern = "hello world"  # 3 vowels
+        large_string = pattern * 10000  # 30,000 vowels total
+
+        result = count_vowels(large_string)
+        self.assertEqual(result, 30000)
+
+    def test_is_palindrome_large_dataset(self):
+        """Test is_palindrome with large palindromic strings."""
+        # Create large palindrome
+        base = "racecar" * 1000
+        palindrome = base + base[::-1]
+
+        result = is_palindrome(palindrome)
+        self.assertTrue(result)
+
+    def test_capitalize_words_large_dataset(self):
+        """Test capitalize_words with large strings."""
+        # Create large string with many words
+        words = ["hello", "world", "python", "testing"] * 1000
+        large_string = " ".join(words)
+
+        result = capitalize_words(large_string)
+
+        # Verify first few words are capitalized
+        result_words = result.split()[:4]
+        expected = ["Hello", "World", "Python", "Testing"]
+        self.assertEqual(result_words, expected)
+
+    def test_remove_duplicates_large_dataset(self):
+        """Test remove_duplicates with large strings."""
+        # Create large string with many duplicates
+        large_string = "abcdef" * 10000  # Many repeated patterns
+
+        result = remove_duplicates(large_string)
+
+        # Should reduce to just unique characters
+        self.assertEqual(result, "abcdef")
+
+
+class TestParametrizedScenarios(unittest.TestCase):
+    """Parametrized tests for multiple input scenarios."""
+
+    def setUp(self):
+        """Set up test data for parametrized tests."""
+        self.reverse_test_cases = [
+            ("", ""),
+            ("a", "a"),
+            ("ab", "ba"),
+            ("hello", "olleh"),
+            ("Python", "nohtyP"),
+            ("12345", "54321"),
+            ("!@#$%", "%$#@!"),
+            ("café", "éfac"),
+            ("🎉🎊", "🎊🎉")
+        ]
+
+        self.vowel_test_cases = [
+            ("", 0),
+            ("bcdfg", 0),
+            ("aeiou", 5),
+            ("hello", 2),
+            ("HELLO", 2),
+            ("programming", 3),
+            ("café", 2),
+            ("naïve", 3)
+        ]
+
+        self.palindrome_test_cases = [
+            ("", True),
+            ("a", True),
+            ("aa", True),
+            ("racecar", True),
+            ("hello", False),
+            ("A man a plan a canal Panama", True),
+            ("race a car", False),  # With spaces
+            ("Madam", True),
+            ("12321", True),
+            ("12345", False)
+        ]
+
+        self.capitalize_test_cases = [
+            ("", ""),
+            ("hello", "Hello"),
+            ("hello world", "Hello World"),
+            ("python programming", "Python Programming"),
+            ("HELLO WORLD", "Hello World"),
+            ("café restaurant", "Café Restaurant")
+        ]
+
+        self.remove_duplicates_test_cases = [
+            ("", ""),
+            ("a", "a"),
+            ("hello", "helo"),
+            ("programming", "progamin"),
+            ("aabbcc", "abc"),
+            ("abcd", "abcd"),
+            ("aaaa", "a"),
+            ("AaBbCc", "AaBbCc")
+        ]
+
+    def test_reverse_string_parametrized(self):
+        """Test reverse_string with multiple input scenarios."""
+        for input_str, expected in self.reverse_test_cases:
+            with self.subTest(input_str=input_str):
+                result = reverse_string(input_str)
+                self.assertEqual(result, expected)
+
+    def test_count_vowels_parametrized(self):
+        """Test count_vowels with multiple input scenarios."""
+        for input_str, expected in self.vowel_test_cases:
+            with self.subTest(input_str=input_str):
+                result = count_vowels(input_str)
+                self.assertEqual(result, expected)
+
+    def test_is_palindrome_parametrized(self):
+        """Test is_palindrome with multiple input scenarios."""
+        for input_str, expected in self.palindrome_test_cases:
+            with self.subTest(input_str=input_str):
+                result = is_palindrome(input_str)
+                self.assertEqual(result, expected)
+
+    def test_capitalize_words_parametrized(self):
+        """Test capitalize_words with multiple input scenarios."""
+        for input_str, expected in self.capitalize_test_cases:
+            with self.subTest(input_str=input_str):
+                result = capitalize_words(input_str)
+                self.assertEqual(result, expected)
+
+    def test_remove_duplicates_parametrized(self):
+        """Test remove_duplicates with multiple input scenarios."""
+        for input_str, expected in self.remove_duplicates_test_cases:
+            with self.subTest(input_str=input_str):
+                result = remove_duplicates(input_str)
+                self.assertEqual(result, expected)
+
+    def test_edge_cases_parametrized(self):
+        """Test edge cases across all functions."""
+        edge_case_strings = ["", " ", "  ", "\n", "\t", "123", "!@#", "🎉"]
+
+        for test_str in edge_case_strings:
+            with self.subTest(test_str=repr(test_str)):
+                # These should not raise exceptions
+                try:
+                    reverse_string(test_str)
+                    count_vowels(test_str)
+                    is_palindrome(test_str)
+                    capitalize_words(test_str)
+                    remove_duplicates(test_str)
+                except Exception as e:
+                    self.fail(f"Function failed on edge case {repr(test_str)}: {e}")
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
