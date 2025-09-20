@@ -9,6 +9,7 @@ import unittest
 import math
 import sys
 import os
+import time
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from math_operations import (
@@ -70,6 +71,29 @@ class TestAddNumbers(unittest.TestCase):
             add_numbers(5, "3")
         with self.assertRaises(TypeError):
             add_numbers(None, 5)
+        with self.assertRaises(TypeError):
+            add_numbers([], 5)
+        with self.assertRaises(TypeError):
+            add_numbers({}, 5)
+
+    def test_very_large_numbers(self):
+        """Test addition with very large numbers."""
+        large_num = 10**100
+        self.assertEqual(add_numbers(large_num, 1), large_num + 1)
+        self.assertEqual(add_numbers(-large_num, large_num), 0)
+
+    def test_very_small_numbers(self):
+        """Test addition with very small numbers."""
+        tiny_num = 1e-100
+        self.assertAlmostEqual(add_numbers(tiny_num, tiny_num), 2 * tiny_num)
+        self.assertAlmostEqual(add_numbers(tiny_num, -tiny_num), 0, places=10)
+
+    def test_mixed_int_float_types(self):
+        """Test addition with mixed integer and float types."""
+        self.assertEqual(add_numbers(5, 2.0), 7.0)
+        self.assertEqual(add_numbers(2.5, 3), 5.5)
+        self.assertIsInstance(add_numbers(5, 2.0), float)
+        self.assertIsInstance(add_numbers(2.5, 3), float)
 
 
 class TestMultiplyList(unittest.TestCase):
@@ -128,6 +152,31 @@ class TestMultiplyList(unittest.TestCase):
         result = multiply_list([2, float('-inf')])
         self.assertTrue(math.isinf(result) and result < 0)
 
+    def test_very_large_list(self):
+        """Test multiplication with very large lists."""
+        large_list = [1.1] * 1000
+        result = multiply_list(large_list)
+        self.assertTrue(math.isinf(result))
+
+    def test_mixed_data_types(self):
+        """Test multiplication with mixed integer and float types."""
+        self.assertEqual(multiply_list([2, 3.0]), 6.0)
+        self.assertEqual(multiply_list([1.5, 4]), 6.0)
+        self.assertIsInstance(multiply_list([2, 3.0]), float)
+
+    def test_very_small_numbers(self):
+        """Test multiplication with very small numbers."""
+        tiny_nums = [1e-50, 1e-50]
+        result = multiply_list(tiny_nums)
+        self.assertEqual(result, 1e-100)
+
+    def test_single_element_edge_cases(self):
+        """Test single element edge cases."""
+        self.assertEqual(multiply_list([float('inf')]), float('inf'))
+        self.assertEqual(multiply_list([float('-inf')]), float('-inf'))
+        result = multiply_list([float('nan')])
+        self.assertTrue(math.isnan(result))
+
 
 class TestCalculateAverage(unittest.TestCase):
     """Test cases for calculate_average function."""
@@ -182,6 +231,37 @@ class TestCalculateAverage(unittest.TestCase):
         result = calculate_average([1, 2, float('-inf')])
         self.assertTrue(math.isinf(result) and result < 0)
 
+    def test_very_large_numbers(self):
+        """Test average with very large numbers."""
+        large_nums = [10**100, 10**100, 10**100]
+        result = calculate_average(large_nums)
+        self.assertEqual(result, 10**100)
+
+    def test_very_small_numbers(self):
+        """Test average with very small numbers."""
+        tiny_nums = [1e-100, 2e-100, 3e-100]
+        result = calculate_average(tiny_nums)
+        self.assertAlmostEqual(result, 2e-100, places=110)
+
+    def test_precision_edge_cases(self):
+        """Test precision with floating point edge cases."""
+        nums = [0.1, 0.2, 0.3]
+        result = calculate_average(nums)
+        self.assertAlmostEqual(result, 0.2, places=10)
+
+    def test_large_list_performance(self):
+        """Test performance with large list."""
+        large_list = list(range(10000))
+        result = calculate_average(large_list)
+        expected = sum(large_list) / len(large_list)
+        self.assertEqual(result, expected)
+
+    def test_mixed_positive_negative_zeros(self):
+        """Test average with mixed positive, negative, and zero values."""
+        mixed_list = [-100, 0, 100, -50, 50]
+        result = calculate_average(mixed_list)
+        self.assertEqual(result, 0.0)
+
 
 class TestFindPrimeFactors(unittest.TestCase):
     """Test cases for find_prime_factors function."""
@@ -230,6 +310,48 @@ class TestFindPrimeFactors(unittest.TestCase):
             find_prime_factors(0)
         with self.assertRaises(ValueError):
             find_prime_factors(-5)
+
+    def test_very_large_prime(self):
+        """Test factorization of large prime numbers."""
+        large_prime = 1009  # A reasonably large prime
+        result = find_prime_factors(large_prime)
+        self.assertEqual(result, [large_prime])
+
+    def test_large_composite_number(self):
+        """Test factorization of large composite numbers."""
+        large_composite = 1024  # 2^10
+        result = find_prime_factors(large_composite)
+        self.assertEqual(result, [2] * 10)
+
+    def test_numbers_with_many_factors(self):
+        """Test numbers with many prime factors."""
+        # 2 * 3 * 5 * 7 * 11 = 2310
+        result = find_prime_factors(2310)
+        self.assertEqual(result, [2, 3, 5, 7, 11])
+
+    def test_powers_of_primes(self):
+        """Test powers of prime numbers."""
+        self.assertEqual(find_prime_factors(8), [2, 2, 2])  # 2^3
+        self.assertEqual(find_prime_factors(27), [3, 3, 3])  # 3^3
+        self.assertEqual(find_prime_factors(125), [5, 5, 5])  # 5^3
+
+    def test_additional_type_errors(self):
+        """Test additional invalid input types."""
+        with self.assertRaises(TypeError):
+            find_prime_factors([12])
+        with self.assertRaises(TypeError):
+            find_prime_factors(None)
+        with self.assertRaises(TypeError):
+            find_prime_factors({})
+
+    def test_performance_large_number(self):
+        """Test performance with reasonably large numbers."""
+        start_time = time.time()
+        result = find_prime_factors(997)  # Large prime
+        end_time = time.time()
+
+        self.assertEqual(result, [997])
+        self.assertLess(end_time - start_time, 1.0)  # Should complete within 1 second
 
 
 class TestFibonacciSequence(unittest.TestCase):
@@ -280,6 +402,140 @@ class TestFibonacciSequence(unittest.TestCase):
             fibonacci_sequence(-1)
         with self.assertRaises(ValueError):
             fibonacci_sequence(-10)
+
+    def test_very_large_fibonacci_sequence(self):
+        """Test performance and correctness of large Fibonacci sequences."""
+        n = 100
+        start_time = time.time()
+        fib_seq = fibonacci_sequence(n)
+        end_time = time.time()
+
+        self.assertEqual(len(fib_seq), n)
+        self.assertEqual(fib_seq[0], 0)
+        self.assertEqual(fib_seq[1], 1)
+        # Verify last few numbers are correct
+        self.assertEqual(fib_seq[-1], 218922995834555169026)
+        self.assertLess(end_time - start_time, 1.0)  # Should complete within 1 second
+
+    def test_fibonacci_growth_properties(self):
+        """Test mathematical properties of Fibonacci sequence growth."""
+        fib_15 = fibonacci_sequence(15)
+        self.assertEqual(len(fib_15), 15)
+
+        # Test that each number is sum of previous two (except first two)
+        for i in range(2, len(fib_15)):
+            self.assertEqual(fib_15[i], fib_15[i-1] + fib_15[i-2])
+
+        # Test that sequence is strictly increasing after first two
+        for i in range(2, len(fib_15)):
+            self.assertGreater(fib_15[i], fib_15[i-1])
+
+    def test_fibonacci_performance_scaling(self):
+        """Test that fibonacci generation scales linearly."""
+        # Test small sequence timing
+        start_time = time.time()
+        fibonacci_sequence(50)
+        small_time = time.time() - start_time
+
+        # Test larger sequence timing
+        start_time = time.time()
+        fibonacci_sequence(200)
+        large_time = time.time() - start_time
+
+        # Large sequence should not be dramatically slower (allow for 10x difference)
+        self.assertLess(large_time, small_time * 10)
+
+    def test_additional_type_errors(self):
+        """Test additional invalid input types for fibonacci."""
+        with self.assertRaises(TypeError):
+            fibonacci_sequence([5])
+        with self.assertRaises(TypeError):
+            fibonacci_sequence(None)
+        with self.assertRaises(TypeError):
+            fibonacci_sequence({})
+        with self.assertRaises(TypeError):
+            fibonacci_sequence(True)  # Boolean is technically an int subclass but not intended
+
+    def test_edge_case_boundary_values(self):
+        """Test boundary values for Fibonacci sequence."""
+        # Test that n=2 works correctly (minimum for full pattern)
+        fib_2 = fibonacci_sequence(2)
+        self.assertEqual(fib_2, [0, 1])
+
+        # Test medium size for comprehensive verification
+        fib_7 = fibonacci_sequence(7)
+        expected_7 = [0, 1, 1, 2, 3, 5, 8]
+        self.assertEqual(fib_7, expected_7)
+
+
+class TestPerformance(unittest.TestCase):
+    """Performance tests for math operations functions."""
+
+    def test_add_numbers_performance(self):
+        """Test add_numbers performance with repeated operations."""
+        start_time = time.time()
+        for _ in range(10000):
+            add_numbers(12345, 67890)
+        end_time = time.time()
+        self.assertLess(end_time - start_time, 1.0)
+
+    def test_multiply_list_large_input_performance(self):
+        """Test multiply_list performance with large input."""
+        large_list = [1.001] * 5000
+        start_time = time.time()
+        multiply_list(large_list)
+        end_time = time.time()
+        self.assertLess(end_time - start_time, 1.0)
+
+    def test_calculate_average_large_dataset(self):
+        """Test calculate_average performance with large dataset."""
+        large_dataset = list(range(50000))
+        start_time = time.time()
+        calculate_average(large_dataset)
+        end_time = time.time()
+        self.assertLess(end_time - start_time, 1.0)
+
+    def test_find_prime_factors_worst_case(self):
+        """Test find_prime_factors performance with large prime."""
+        large_prime = 7919  # Large prime number
+        start_time = time.time()
+        result = find_prime_factors(large_prime)
+        end_time = time.time()
+
+        self.assertEqual(result, [large_prime])
+        self.assertLess(end_time - start_time, 2.0)  # Allow more time for prime factorization
+
+    def test_fibonacci_sequence_scaling(self):
+        """Test fibonacci_sequence performance scaling."""
+        # Test different sizes to verify linear scaling
+        sizes = [100, 500, 1000]
+        times = []
+
+        for size in sizes:
+            start_time = time.time()
+            fibonacci_sequence(size)
+            end_time = time.time()
+            times.append(end_time - start_time)
+
+        # Each should complete within reasonable time
+        for i, time_taken in enumerate(times):
+            self.assertLess(time_taken, 2.0, f"Size {sizes[i]} took too long: {time_taken}s")
+
+    def test_memory_efficiency_fibonacci(self):
+        """Test that fibonacci_sequence doesn't use excessive memory."""
+        import sys
+
+        # Get baseline memory usage
+        baseline = sys.getsizeof([])
+
+        # Generate large fibonacci sequence
+        fib_1000 = fibonacci_sequence(1000)
+        list_size = sys.getsizeof(fib_1000)
+
+        # Memory should scale reasonably with size
+        # Allow generous margin for Python object overhead
+        expected_max = baseline + (1000 * 8 * 10)  # Rough estimate with overhead
+        self.assertLess(list_size, expected_max)
 
 
 if __name__ == '__main__':
