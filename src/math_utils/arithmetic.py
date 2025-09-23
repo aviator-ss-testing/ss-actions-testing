@@ -10,44 +10,44 @@ from typing import Union
 Number = Union[int, float]
 
 
-def add(a: Number, b: Number) -> Number:
+def add(x: Number, y: Number) -> Number:
     """Add two numbers.
 
-    Args: a: First number
-          b: Second number
-    Returns: Sum of a and b
+    Args: x: First number
+          y: Second number
+    Returns: Sum of x and y
     """
-    return a + b
+    return x + y
 
 
-def subtract(a: Number, b: Number) -> Number:
+def subtract(x: Number, y: Number) -> Number:
     """Subtract second number from first number.
 
-    Args: a: Number to subtract from
-          b: Number to subtract
-    Returns: Difference of a and b
+    Args: x: Number to subtract from
+          y: Number to subtract
+    Returns: Difference of x and y
     """
-    return a - b
+    return x - y
 
 
-def multiply(a: Number, b: Number) -> Number:
+def multiply(x: Number, y: Number) -> Number:
     """Multiply two numbers.
 
-    Args: a: First number
-          b: Second number
-    Returns: Product of a and b
+    Args: x: First number
+          y: Second number
+    Returns: Product of x and y
     """
-    return a * b
+    return x * y
 
 
-def divide(a: Number, b: Number) -> float:
+def divide(x: Number, y: Number) -> float:
     """Divide first number by second number.
 
-    Args: a: Dividend
-          b: Divisor
-    Returns: Quotient of a divided by b
-    Raises: ZeroDivisionError: If b is zero
+    Args: x: Dividend
+          y: Divisor
+    Returns: Quotient of x divided by y
+    Raises: ZeroDivisionError: If y is zero
     """
-    if b == 0:
+    if y == 0:
         raise ZeroDivisionError("Cannot divide by zero")
-    return a / b
+    return x / y
