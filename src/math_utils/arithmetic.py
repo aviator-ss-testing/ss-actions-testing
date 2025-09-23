@@ -11,60 +11,42 @@ Number = Union[int, float]
 
 
 def add(a: Number, b: Number) -> Number:
-    """
-    Add two numbers.
+    """Add two numbers.
 
-    Args:
-        a: First number
-        b: Second number
-
-    Returns:
-        Sum of a and b
+    Args: a: First number
+          b: Second number
+    Returns: Sum of a and b
     """
     return a + b
 
 
 def subtract(a: Number, b: Number) -> Number:
-    """
-    Subtract second number from first number.
+    """Subtract second number from first number.
 
-    Args:
-        a: Number to subtract from
-        b: Number to subtract
-
-    Returns:
-        Difference of a and b
+    Args: a: Number to subtract from
+          b: Number to subtract
+    Returns: Difference of a and b
     """
     return a - b
 
 
 def multiply(a: Number, b: Number) -> Number:
-    """
-    Multiply two numbers.
+    """Multiply two numbers.
 
-    Args:
-        a: First number
-        b: Second number
-
-    Returns:
-        Product of a and b
+    Args: a: First number
+          b: Second number
+    Returns: Product of a and b
     """
     return a * b
 
 
 def divide(a: Number, b: Number) -> float:
-    """
-    Divide first number by second number.
+    """Divide first number by second number.
 
-    Args:
-        a: Dividend
-        b: Divisor
-
-    Returns:
-        Quotient of a divided by b
-
-    Raises:
-        ZeroDivisionError: If b is zero
+    Args: a: Dividend
+          b: Divisor
+    Returns: Quotient of a divided by b
+    Raises: ZeroDivisionError: If b is zero
     """
     if b == 0:
         raise ZeroDivisionError("Cannot divide by zero")
