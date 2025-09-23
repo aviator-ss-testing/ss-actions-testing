@@ -9,92 +9,58 @@ import math
 from collections import Counter
 
 
-def _validate_numbers(numbers: List[Union[int, float]]) -> None:
-    """
-    Validate that the input is a non-empty list of numeric values.
 
-    Args:
-        numbers: List of numbers to validate
-
-    Raises:
-        ValueError: If list is empty or contains non-numeric values
-        TypeError: If input is not a list
-    """
-    if not isinstance(numbers, list):
-        raise TypeError("Input must be a list")
-
-    if len(numbers) == 0:
-        raise ValueError("Cannot perform statistical operations on empty list")
-
-    for i, num in enumerate(numbers):
-        if not isinstance(num, (int, float)):
-            raise ValueError(f"All elements must be numeric. Found {type(num).__name__} at index {i}")
-
-
-def mean(numbers: List[Union[int, float]]) -> float:
+def mean(x: List[Union[int, float]]) -> float:
     """
     Calculate the arithmetic mean (average) of a list of numbers.
 
     Args:
-        numbers: List of numeric values
+        x: List of numeric values
 
     Returns:
         float: The arithmetic mean of the numbers
-
-    Raises:
-        ValueError: If list is empty or contains non-numeric values
-        TypeError: If input is not a list
     """
-    _validate_numbers(numbers)
-    return sum(numbers) / len(numbers)
+    return sum(x) / len(x)
 
 
-def median(numbers: List[Union[int, float]]) -> Union[int, float]:
+def median(x: List[Union[int, float]]) -> Union[int, float]:
     """
     Find the median (middle value) of a list of numbers.
 
     Args:
-        numbers: List of numeric values
+        x: List of numeric values
 
     Returns:
         Union[int, float]: The median value
-
-    Raises:
-        ValueError: If list is empty or contains non-numeric values
-        TypeError: If input is not a list
     """
-    _validate_numbers(numbers)
-    sorted_numbers = sorted(numbers)
-    n = len(sorted_numbers)
+    sorted_x = sorted(x)
+    n = len(sorted_x)
 
     if n % 2 == 1:
         # Odd number of elements, return middle element
-        return sorted_numbers[n // 2]
+        return sorted_x[n // 2]
     else:
         # Even number of elements, return average of two middle elements
-        mid1 = sorted_numbers[n // 2 - 1]
-        mid2 = sorted_numbers[n // 2]
+        mid1 = sorted_x[n // 2 - 1]
+        mid2 = sorted_x[n // 2]
         return (mid1 + mid2) / 2
 
 
-def mode(numbers: List[Union[int, float]]) -> Union[int, float]:
+def mode(x: List[Union[int, float]]) -> Union[int, float]:
     """
     Find the mode (most frequent value) of a list of numbers.
 
     Args:
-        numbers: List of numeric values
+        x: List of numeric values
 
     Returns:
         Union[int, float]: The most frequent value
 
     Raises:
-        ValueError: If list is empty, contains non-numeric values, or has no unique mode
-        TypeError: If input is not a list
+        ValueError: If has no unique mode
     """
-    _validate_numbers(numbers)
-
     # Count frequencies of each number
-    counter = Counter(numbers)
+    counter = Counter(x)
     max_count = max(counter.values())
 
     # Find all numbers with maximum frequency
@@ -106,30 +72,24 @@ def mode(numbers: List[Union[int, float]]) -> Union[int, float]:
     return modes[0]
 
 
-def standard_deviation(numbers: List[Union[int, float]]) -> float:
+def standard_deviation(x: List[Union[int, float]]) -> float:
     """
     Calculate the population standard deviation of a list of numbers.
 
     Args:
-        numbers: List of numeric values
+        x: List of numeric values
 
     Returns:
         float: The population standard deviation
-
-    Raises:
-        ValueError: If list is empty or contains non-numeric values
-        TypeError: If input is not a list
     """
-    _validate_numbers(numbers)
-
     # Calculate mean
-    mean_value = mean(numbers)
+    mean_value = mean(x)
 
     # Calculate squared differences from mean
-    squared_diffs = [(x - mean_value) ** 2 for x in numbers]
+    squared_diffs = [(num - mean_value) ** 2 for num in x]
 
     # Calculate variance (population variance, not sample)
-    variance = sum(squared_diffs) / len(numbers)
+    variance = sum(squared_diffs) / len(x)
 
     # Return standard deviation (square root of variance)
     return math.sqrt(variance)
