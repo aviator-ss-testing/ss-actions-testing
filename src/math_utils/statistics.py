@@ -2,7 +2,7 @@
 Statistical utilities module.
 
 This module provides statistical calculation functions including mean, median,
-mode, and standard deviation with proper input validation and error handling.
+mode, and standard deviation.
 """
 
 from typing import List, Union
@@ -12,59 +12,22 @@ import math
 Number = Union[int, float]
 
 
-def _validate_numbers(numbers: List[Number]) -> None:
-    """Validate input list for statistical calculations.
-
-    Args:
-        numbers: List of numbers to validate
-
-    Raises:
-        ValueError: If list is empty or contains non-numeric values
-        TypeError: If input is not a list
-    """
-    if not isinstance(numbers, list):
-        raise TypeError("Input must be a list")
-
-    if len(numbers) == 0:
-        raise ValueError("Cannot calculate statistics for empty list")
-
-    for num in numbers:
-        if not isinstance(num, (int, float)):
-            raise ValueError(f"All elements must be numeric, found: {type(num).__name__}")
-
 
 def mean(numbers: List[Number]) -> float:
     """Calculate the arithmetic mean (average) of a list of numbers.
 
-    Args:
-        numbers: List of numeric values
-
-    Returns:
-        The arithmetic mean as a float
-
-    Raises:
-        ValueError: If list is empty or contains non-numeric values
-        TypeError: If input is not a list
+    Args: numbers: List of numeric values
+    Returns: The arithmetic mean as a float
     """
-    _validate_numbers(numbers)
     return sum(numbers) / len(numbers)
 
 
 def median(numbers: List[Number]) -> Union[int, float]:
     """Find the median (middle value) of a list of numbers.
 
-    Args:
-        numbers: List of numeric values
-
-    Returns:
-        The median value. Returns int if all inputs are int and result is whole number,
-        otherwise returns float
-
-    Raises:
-        ValueError: If list is empty or contains non-numeric values
-        TypeError: If input is not a list
+    Args: numbers: List of numeric values
+    Returns: The median value. Returns int if all inputs are int and result is whole number, otherwise returns float
     """
-    _validate_numbers(numbers)
     sorted_numbers = sorted(numbers)
     n = len(sorted_numbers)
 
@@ -86,17 +49,9 @@ def median(numbers: List[Number]) -> Union[int, float]:
 def mode(numbers: List[Number]) -> List[Number]:
     """Find the mode (most frequently occurring value(s)) in a list of numbers.
 
-    Args:
-        numbers: List of numeric values
-
-    Returns:
-        List of the most frequent value(s). Returns list even for single mode.
-
-    Raises:
-        ValueError: If list is empty or contains non-numeric values
-        TypeError: If input is not a list
+    Args: numbers: List of numeric values
+    Returns: List of the most frequent value(s). Returns list even for single mode.
     """
-    _validate_numbers(numbers)
 
     # Count frequency of each number
     counter = Counter(numbers)
@@ -112,17 +67,9 @@ def mode(numbers: List[Number]) -> List[Number]:
 def standard_deviation(numbers: List[Number]) -> float:
     """Calculate the population standard deviation of a list of numbers.
 
-    Args:
-        numbers: List of numeric values
-
-    Returns:
-        The population standard deviation as a float
-
-    Raises:
-        ValueError: If list is empty or contains non-numeric values
-        TypeError: If input is not a list
+    Args: numbers: List of numeric values
+    Returns: The population standard deviation as a float
     """
-    _validate_numbers(numbers)
 
     if len(numbers) == 1:
         return 0.0
