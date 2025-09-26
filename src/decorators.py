@@ -1,14 +1,17 @@
 """
 Decorator utilities for enhancing function behavior.
 
-This module provides decorators for timing, validation, retry logic, and logging
-to enhance existing functions without modifying their core logic.
+This module provides decorators for timing, validation, retry logic, logging,
+caching, rate limiting, deprecation warnings, and type checking to enhance
+existing functions without modifying their core logic.
 """
 
 import time
 import functools
 import logging
-from typing import Any, Callable, Dict, List, Union
+import warnings
+import threading
+from typing import Any, Callable, Dict, List, Union, get_type_hints
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -231,4 +234,242 @@ def validate(types: Dict[str, type] = None, ranges: Dict[str, tuple] = None) -> 
             func = validate_range(**ranges)(func)
 
         return func
+    return decorator
+
+
+def memoize(func: Callable) -> Callable:
+    """
+    Simple memoization decorator for caching function results.
+
+    Caches function results based on arguments to avoid repeated computations.
+    Works with functions that have hashable arguments.
+
+    Args:
+        func: The function to memoize
+
+    Returns:
+        Wrapped function that caches results
+
+    Example:
+        @memoize
+        def fibonacci(n):
+            if n < 2:
+                return n
+            return fibonacci(n-1) + fibonacci(n-2)
+    """
+    cache = {}
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        # Create cache key from arguments
+        try:
+            # Convert kwargs to sorted tuple for consistent hashing
+            kwargs_tuple = tuple(sorted(kwargs.items()))
+            cache_key = (args, kwargs_tuple)
+        except TypeError:
+            # If arguments are not hashable, don't cache
+            return func(*args, **kwargs)
+
+        # Return cached result if available
+        if cache_key in cache:
+            return cache[cache_key]
+
+        # Compute and cache result
+        result = func(*args, **kwargs)
+        cache[cache_key] = result
+        return result
+
+    # Add cache inspection methods
+    wrapper.cache = cache
+    wrapper.cache_clear = lambda: cache.clear()
+    wrapper.cache_info = lambda: {'hits': len(cache), 'cached_results': list(cache.keys())}
+
+    return wrapper
+
+
+def rate_limit(calls_per_second: float = 1.0, per_instance: bool = False) -> Callable:
+    """
+    Rate limiting decorator that prevents too frequent function calls.
+
+    Limits the frequency of function calls by introducing delays when necessary.
+
+    Args:
+        calls_per_second: Maximum number of calls allowed per second (default: 1.0)
+        per_instance: If True, rate limit per function instance, otherwise globally (default: False)
+
+    Returns:
+        Decorator function that implements rate limiting
+
+    Example:
+        @rate_limit(calls_per_second=2.0)
+        def api_call():
+            return "API response"
+    """
+    min_interval = 1.0 / calls_per_second
+
+    def decorator(func: Callable) -> Callable:
+        last_called = {}
+        lock = threading.Lock()
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            with lock:
+                # Determine key for tracking calls
+                if per_instance:
+                    # Use function + args as key for per-instance limiting
+                    try:
+                        key = (func.__name__, args, tuple(sorted(kwargs.items())))
+                    except TypeError:
+                        key = func.__name__  # Fallback if args not hashable
+                else:
+                    # Global limiting for this function
+                    key = func.__name__
+
+                current_time = time.time()
+
+                # Check if we need to wait
+                if key in last_called:
+                    time_since_last = current_time - last_called[key]
+                    if time_since_last < min_interval:
+                        sleep_time = min_interval - time_since_last
+                        print(f"Rate limiting {func.__name__}: sleeping {sleep_time:.3f}s")
+                        time.sleep(sleep_time)
+                        current_time = time.time()
+
+                last_called[key] = current_time
+
+            return func(*args, **kwargs)
+
+        return wrapper
+    return decorator
+
+
+def deprecated(reason: str = "", version: str = "", alternative: str = "") -> Callable:
+    """
+    Decorator that warns when deprecated functions are called.
+
+    Issues a DeprecationWarning when the decorated function is called,
+    providing information about deprecation reason and alternatives.
+
+    Args:
+        reason: Reason for deprecation (default: "")
+        version: Version when function was deprecated (default: "")
+        alternative: Suggested alternative function or approach (default: "")
+
+    Returns:
+        Decorator function that issues deprecation warnings
+
+    Example:
+        @deprecated(reason="Use new_function instead", version="2.0", alternative="new_function()")
+        def old_function():
+            return "legacy behavior"
+    """
+    def decorator(func: Callable) -> Callable:
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            # Build warning message
+            warning_msg = f"Call to deprecated function '{func.__name__}'"
+
+            if version:
+                warning_msg += f" (deprecated since version {version})"
+
+            if reason:
+                warning_msg += f": {reason}"
+
+            if alternative:
+                warning_msg += f". Use {alternative} instead"
+
+            # Issue deprecation warning
+            warnings.warn(
+                warning_msg,
+                category=DeprecationWarning,
+                stacklevel=2
+            )
+
+            return func(*args, **kwargs)
+
+        return wrapper
+    return decorator
+
+
+def type_check(strict: bool = True, check_return: bool = True) -> Callable:
+    """
+    Type checking decorator that validates input and output types based on type hints.
+
+    Validates function arguments and return values against their type annotations.
+
+    Args:
+        strict: If True, raises TypeError on mismatch; if False, issues warning (default: True)
+        check_return: Whether to validate return type (default: True)
+
+    Returns:
+        Decorator function that validates types
+
+    Example:
+        @type_check()
+        def add_numbers(x: int, y: int) -> int:
+            return x + y
+    """
+    def decorator(func: Callable) -> Callable:
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            # Get type hints
+            try:
+                type_hints = get_type_hints(func)
+            except (NameError, AttributeError):
+                # No type hints available, skip validation
+                if not strict:
+                    warnings.warn(f"No type hints found for function '{func.__name__}'")
+                return func(*args, **kwargs)
+
+            # Get function signature for parameter names
+            import inspect
+            sig = inspect.signature(func)
+            bound_args = sig.bind(*args, **kwargs)
+            bound_args.apply_defaults()
+
+            # Validate input types
+            for param_name, value in bound_args.arguments.items():
+                if param_name in type_hints and param_name != 'return':
+                    expected_type = type_hints[param_name]
+
+                    # Handle Union types and other special typing constructs
+                    if hasattr(expected_type, '__origin__'):
+                        # Skip complex generic types for now
+                        continue
+
+                    if not isinstance(value, expected_type):
+                        error_msg = (
+                            f"Type mismatch for parameter '{param_name}' in function '{func.__name__}': "
+                            f"expected {expected_type.__name__}, got {type(value).__name__}"
+                        )
+
+                        if strict:
+                            raise TypeError(error_msg)
+                        else:
+                            warnings.warn(error_msg)
+
+            # Execute function
+            result = func(*args, **kwargs)
+
+            # Validate return type if requested
+            if check_return and 'return' in type_hints:
+                expected_return_type = type_hints['return']
+
+                # Skip complex generic types
+                if not hasattr(expected_return_type, '__origin__'):
+                    if not isinstance(result, expected_return_type):
+                        error_msg = (
+                            f"Return type mismatch in function '{func.__name__}': "
+                            f"expected {expected_return_type.__name__}, got {type(result).__name__}"
+                        )
+
+                        if strict:
+                            raise TypeError(error_msg)
+                        else:
+                            warnings.warn(error_msg)
+
+            return result
+
+        return wrapper
     return decorator
