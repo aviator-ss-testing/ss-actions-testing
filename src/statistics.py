@@ -14,12 +14,8 @@ def mean(numbers: List[Union[int, float]]) -> float:
     """
     Calculate the arithmetic mean of a list of numbers.
 
-    Args:
-        numbers: List of numbers to calculate mean for
-
-    Returns:
-        float: The arithmetic mean
-
+    Args: numbers: List of numbers to calculate mean for
+    Returns: float: The arithmetic mean
     Raises:
         ValueError: If the list is empty
         TypeError: If the list contains non-numeric values
@@ -37,12 +33,8 @@ def median(numbers: List[Union[int, float]]) -> float:
     """
     Calculate the median of a list of numbers.
 
-    Args:
-        numbers: List of numbers to calculate median for
-
-    Returns:
-        float: The median value
-
+    Args: numbers: List of numbers to calculate median for
+    Returns: float: The median value
     Raises:
         ValueError: If the list is empty
         TypeError: If the list contains non-numeric values
@@ -68,12 +60,8 @@ def mode(numbers: List[Union[int, float]]) -> List[Union[int, float]]:
     """
     Calculate the mode(s) of a list of numbers.
 
-    Args:
-        numbers: List of numbers to calculate mode for
-
-    Returns:
-        List: List of mode values (can be multiple if there's a tie)
-
+    Args: numbers: List of numbers to calculate mode for
+    Returns: List: List of mode values (can be multiple if there's a tie)
     Raises:
         ValueError: If the list is empty
         TypeError: If the list contains non-numeric values
@@ -94,13 +82,9 @@ def standard_deviation(numbers: List[Union[int, float]], sample: bool = False) -
     """
     Calculate the standard deviation of a list of numbers.
 
-    Args:
-        numbers: List of numbers to calculate standard deviation for
-        sample: If True, calculate sample standard deviation (n-1). If False, population (n)
-
-    Returns:
-        float: The standard deviation
-
+    Args: numbers: List of numbers to calculate standard deviation for
+          sample: If True, calculate sample standard deviation (n-1). If False, population (n)
+    Returns: float: The standard deviation
     Raises:
         ValueError: If the list is empty or has only one element when sample=True
         TypeError: If the list contains non-numeric values
@@ -127,13 +111,9 @@ def variance(numbers: List[Union[int, float]], sample: bool = False) -> float:
     """
     Calculate the variance of a list of numbers.
 
-    Args:
-        numbers: List of numbers to calculate variance for
-        sample: If True, calculate sample variance (n-1). If False, population (n)
-
-    Returns:
-        float: The variance
-
+    Args: numbers: List of numbers to calculate variance for
+          sample: If True, calculate sample variance (n-1). If False, population (n)
+    Returns: float: The variance
     Raises:
         ValueError: If the list is empty or has only one element when sample=True
         TypeError: If the list contains non-numeric values
@@ -158,12 +138,8 @@ def min_max(numbers: List[Union[int, float]]) -> Tuple[Union[int, float], Union[
     """
     Find the minimum and maximum values in a list of numbers.
 
-    Args:
-        numbers: List of numbers to find min/max for
-
-    Returns:
-        Tuple: (minimum, maximum) values
-
+    Args: numbers: List of numbers to find min/max for
+    Returns: Tuple: (minimum, maximum) values
     Raises:
         ValueError: If the list is empty
         TypeError: If the list contains non-numeric values
@@ -181,12 +157,8 @@ def range_calc(numbers: List[Union[int, float]]) -> Union[int, float]:
     """
     Calculate the range (max - min) of a list of numbers.
 
-    Args:
-        numbers: List of numbers to calculate range for
-
-    Returns:
-        Union[int, float]: The range value
-
+    Args: numbers: List of numbers to calculate range for
+    Returns: Union[int, float]: The range value
     Raises:
         ValueError: If the list is empty
         TypeError: If the list contains non-numeric values
@@ -205,13 +177,9 @@ def percentile(numbers: List[Union[int, float]], p: Union[int, float]) -> float:
     """
     Calculate the p-th percentile of a list of numbers.
 
-    Args:
-        numbers: List of numbers to calculate percentile for
-        p: Percentile to calculate (0-100)
-
-    Returns:
-        float: The percentile value
-
+    Args: numbers: List of numbers to calculate percentile for
+          p: Percentile to calculate (0-100)
+    Returns: float: The percentile value
     Raises:
         ValueError: If the list is empty or percentile is not between 0-100
         TypeError: If the list contains non-numeric values or p is not numeric
