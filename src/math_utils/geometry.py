@@ -8,7 +8,7 @@ import math
 from typing import Union
 
 
-def circle_area(radius: Union[int, float]) -> float:
+def _circle_area(radius: Union[int, float]) -> float:
     """
     Calculate the area of a circle.
 
