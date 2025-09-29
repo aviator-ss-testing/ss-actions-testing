@@ -42,6 +42,19 @@ def rectangle_area(length: Union[int, float], width: Union[int, float]) -> float
     return length * width
 
 
+def square_area(side: Union[int, float]) -> float:
+    """
+    Calculate the area of a square.
+
+    Args: side: The length of one side of the square
+    Returns: The area of the square
+    Raises:
+        ValueError: If side is negative
+        TypeError: If side is not a number
+    """
+    return rectangle_area(side, side)
+
+
 def triangle_area(base: Union[int, float], height: Union[int, float]) -> float:
     """
     Calculate the area of a triangle.
