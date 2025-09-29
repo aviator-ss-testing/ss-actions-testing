@@ -12,12 +12,8 @@ def circle_area(radius: Union[int, float]) -> float:
     """
     Calculate the area of a circle.
 
-    Args:
-        radius: The radius of the circle
-
-    Returns:
-        The area of the circle
-
+    Args: radius: The radius of the circle
+    Returns: The area of the circle
     Raises:
         ValueError: If radius is negative
         TypeError: If radius is not a number
@@ -33,13 +29,8 @@ def rectangle_area(length: Union[int, float], width: Union[int, float]) -> float
     """
     Calculate the area of a rectangle.
 
-    Args:
-        length: The length of the rectangle
-        width: The width of the rectangle
-
-    Returns:
-        The area of the rectangle
-
+    Args: length: The length of the rectangle, width: The width of the rectangle
+    Returns: The area of the rectangle
     Raises:
         ValueError: If length or width is negative
         TypeError: If length or width is not a number
@@ -55,13 +46,8 @@ def triangle_area(base: Union[int, float], height: Union[int, float]) -> float:
     """
     Calculate the area of a triangle.
 
-    Args:
-        base: The base of the triangle
-        height: The height of the triangle
-
-    Returns:
-        The area of the triangle
-
+    Args: base: The base of the triangle, height: The height of the triangle
+    Returns: The area of the triangle
     Raises:
         ValueError: If base or height is negative
         TypeError: If base or height is not a number
@@ -77,13 +63,8 @@ def pythagorean_theorem(a: Union[int, float], b: Union[int, float]) -> float:
     """
     Calculate the hypotenuse of a right triangle using the Pythagorean theorem.
 
-    Args:
-        a: Length of one side of the triangle
-        b: Length of the other side of the triangle
-
-    Returns:
-        The length of the hypotenuse
-
+    Args: a: Length of one side of the triangle, b: Length of the other side of the triangle
+    Returns: The length of the hypotenuse
     Raises:
         ValueError: If a or b is negative
         TypeError: If a or b is not a number
