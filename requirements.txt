@@ -1,0 +1,3 @@
+# Python Requirements
+# This project uses only Python built-in modules (unittest for testing)
+# No external dependencies are required
