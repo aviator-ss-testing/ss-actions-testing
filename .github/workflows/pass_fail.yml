@@ -6,13 +6,17 @@ permissions:
   contents: read
 
 jobs:
-  always_fail:
+  test:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: Always fail
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+    - name: Run tests
       run: |
-        echo success
-        exit 0
+        echo "Running Python tests..."
+        python -m unittest discover -s tests -v
