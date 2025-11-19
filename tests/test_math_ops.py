@@ -7,7 +7,9 @@ greatest common divisor, and prime number checking with various edge cases.
 
 import unittest
 import sys
-sys.path.insert(0, '/private/tmp/codemod/worktrees/repo-1-rnd-12df8c72-0f7c-4d34-9204-68fe56390297')
+import os
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.math_ops import factorial, fibonacci, gcd, is_prime
 
