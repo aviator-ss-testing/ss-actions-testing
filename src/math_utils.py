@@ -2,10 +2,7 @@ from functools import wraps
 
 
 def validate_numbers(func):
-    """
-    Decorator that validates inputs are numeric types (int or float).
-    Raises TypeError if any argument is not numeric.
-    """
+    """Decorator that validates inputs are numeric types (int or float). Raises TypeError if any argument is not numeric."""
     @wraps(func)
     def wrapper(*args, **kwargs):
         for arg in args:
@@ -20,19 +17,7 @@ def validate_numbers(func):
 
 @validate_numbers
 def add(a, b):
-    """
-    Add two numbers together.
-
-    Args:
-        a: First number (int or float)
-        b: Second number (int or float)
-
-    Returns:
-        The sum of a and b
-
-    Raises:
-        TypeError: If inputs are not numeric
-    """
+    """Add two numbers together. Returns the sum of a and b."""
     return a + b
 
 
