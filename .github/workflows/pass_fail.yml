@@ -1,4 +1,4 @@
-name: Pass or fail
+name: Run Tests
 
 on: [pull_request]
 
@@ -6,13 +6,15 @@ permissions:
   contents: read
 
 jobs:
-  always_fail:
+  run_tests:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: Always fail
-      run: |
-        echo success
-        exit 0
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    - name: Run tests
+      run: python -m unittest discover -v
