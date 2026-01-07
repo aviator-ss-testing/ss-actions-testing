@@ -1,0 +1,3 @@
+# Integration testing dependencies
+# Note: This project uses unittest from the Python standard library (no external dependencies required)
+# Add any future development or testing tools below as needed
