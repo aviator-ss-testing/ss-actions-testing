@@ -1,0 +1,2 @@
+# Requirements for integration testing
+# unittest is part of Python standard library, no external dependencies needed
