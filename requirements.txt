@@ -1,0 +1,10 @@
+# Integration Testing Dependencies
+# This project uses unittest from Python's standard library for testing
+# No external dependencies required for core functionality
+
+# Development tools can be added below as needed
+# Examples:
+# pytest==7.4.0
+# coverage==7.2.7
+# black==23.3.0
+# flake8==6.0.0
