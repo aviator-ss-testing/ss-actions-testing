@@ -1,0 +1,10 @@
+# Integration Testing Dependencies
+#
+# This project uses unittest from the Python standard library for testing.
+# No external dependencies are required for the core functionality and tests.
+#
+# Development tools can be added below as needed:
+# pytest>=7.0.0           # Alternative test runner
+# coverage>=7.0.0         # Code coverage analysis
+# black>=23.0.0           # Code formatting
+# pylint>=2.15.0          # Linting and code quality
