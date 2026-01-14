@@ -1,0 +1,1 @@
+PR_HOOKS_CONTENT\n
