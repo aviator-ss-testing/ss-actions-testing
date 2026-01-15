@@ -75,3 +75,17 @@ def validate_types(*expected_types: type) -> Callable[[F], F]:
             return func(*args, **kwargs)
         return wrapper
     return decorator
+
+def testDeterminism(func: F) -> F:
+    """Decorator to test function determinism by calling it twice and comparing results.
+    Usage: @testDeterminism decorates functions to verify they return the same result on repeated calls.
+    Example: @testDeterminism\n    def get_value(x): return x * 2
+    Raises: AssertionError if the two calls produce different results"""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        result1 = func(*args, **kwargs)
+        result2 = func(*args, **kwargs)
+        if result1 != result2:
+            raise AssertionError(f"{func.__name__} is not deterministic: first call returned {result1}, second call returned {result2}")
+        return result1
+    return wrapper
