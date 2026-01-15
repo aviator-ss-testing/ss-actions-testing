@@ -1,0 +1,23 @@
+name: Run Tests
+
+on: [pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Run tests
+      run: |
+        python hello.py
+        # Simulate test failure
+        echo "FAILED: Test assertion error"
+        exit 1
