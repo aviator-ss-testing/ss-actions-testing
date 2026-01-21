@@ -1,0 +1,21 @@
+name: Type Check
+
+on: [pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install mypy
+      run: pip install mypy
+    - name: Run type checker
+      run: mypy calculator.py --strict

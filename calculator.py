@@ -1,5 +1,7 @@
 """Simple calculator module for testing CI rework."""
 
+import os  # BUG: unused import for lint failure
+
 
 def add(a: int, b: int) -> int:
     """Add two numbers together."""
@@ -22,3 +24,9 @@ def divide(a: int, b: int) -> float:
     if b == 0:
         raise ValueError("Cannot divide by zero")
     return a / b
+
+
+def power(base: int, exp: int) -> int:
+    """Raise base to the power of exp."""
+    # BUG: returns string but annotated as int (type error)
+    return f"{base}^{exp}"
