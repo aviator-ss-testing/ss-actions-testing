@@ -1,0 +1,24 @@
+"""Simple calculator module for testing CI rework."""
+
+
+def add(a: int, b: int) -> int:
+    """Add two numbers together."""
+    return a + b
+
+
+def subtract(a: int, b: int) -> int:
+    """Subtract b from a."""
+    return a - b
+
+
+def multiply(a: int, b: int) -> int:
+    """Multiply two numbers."""
+    # BUG: This is intentionally wrong to test CI rework
+    return a + b  # Should be a * b
+
+
+def divide(a: int, b: int) -> float:
+    """Divide a by b."""
+    if b == 0:
+        raise ValueError("Cannot divide by zero")
+    return a / b
