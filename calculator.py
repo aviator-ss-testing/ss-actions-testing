@@ -26,5 +26,4 @@ def divide(a: int, b: int) -> float:
 
 def power(base: int, exp: int) -> int:
     """Raise base to the power of exp."""
-    # BUG: returns string but annotated as int (type error)
-    return f"{base}^{exp}"
+    return base ** exp
