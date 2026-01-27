@@ -1,5 +1,4 @@
 """Tests for the converters module."""
-import pytest
 from converters import (
     celsius_to_fahrenheit,
     fahrenheit_to_celsius,
