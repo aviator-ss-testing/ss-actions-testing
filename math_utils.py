@@ -83,25 +83,25 @@ def math_mean(numbers: List[float]) -> float:
     if len(numbers) == 0: raise ValueError("math_mean() requires at least one number")
     return sum(numbers) / len(numbers)
 
-def median(numbers: List[float]) -> float:
+def math_median(numbers: List[float]) -> float:
     """Calculate the median of a list of numbers.
     Args: numbers - A list of numbers
     Returns: The median value
     Raises: TypeError if numbers is not a list, ValueError if numbers is empty"""
     if not isinstance(numbers, list):
-        raise TypeError(f"median() argument must be a list, not {type(numbers).__name__}")
-    if len(numbers) == 0: raise ValueError("median() requires at least one number")
+        raise TypeError(f"math_median() argument must be a list, not {type(numbers).__name__}")
+    if len(numbers) == 0: raise ValueError("math_median() requires at least one number")
     sorted_numbers = sorted(numbers)
     n = len(sorted_numbers)
     if n % 2 == 0: return (sorted_numbers[n // 2 - 1] + sorted_numbers[n // 2]) / 2
     return sorted_numbers[n // 2]
 
-def mode(numbers: List[float]) -> float:
+def math_mode(numbers: List[float]) -> float:
     """Calculate the mode (most frequent value) of a list of numbers.
     Args: numbers - A list of numbers
     Returns: The most frequent value (if tie, returns first encountered)
     Raises: TypeError if numbers is not a list, ValueError if numbers is empty"""
     if not isinstance(numbers, list):
-        raise TypeError(f"mode() argument must be a list, not {type(numbers).__name__}")
-    if len(numbers) == 0: raise ValueError("mode() requires at least one number")
+        raise TypeError(f"math_mode() argument must be a list, not {type(numbers).__name__}")
+    if len(numbers) == 0: raise ValueError("math_mode() requires at least one number")
     return Counter(numbers).most_common(1)[0][0]

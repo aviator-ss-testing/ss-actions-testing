@@ -1,6 +1,6 @@
 """Comprehensive test suite for math_utils module with normal, edge, and error cases."""
 import unittest
-from math_utils import factorial, fibonacci, is_prime, gcd, lcm, math_mean, median, mode
+from math_utils import factorial, fibonacci, is_prime, gcd, lcm, math_mean, math_median, math_mode
 
 class TestMathUtils(unittest.TestCase):
     """Test cases for mathematical and statistical utility functions."""
@@ -203,75 +203,75 @@ class TestMathUtils(unittest.TestCase):
         with self.assertRaises(TypeError):
             math_mean((1, 2, 3))
 
-    def test_median_normal_cases(self):
-        """Test median with typical number lists."""
-        self.assertAlmostEqual(median([1, 2, 3, 4, 5]), 3.0)
-        self.assertAlmostEqual(median([1, 2, 3, 4]), 2.5)
-        self.assertAlmostEqual(median([5, 1, 3, 2, 4]), 3.0)
-        self.assertAlmostEqual(median([10, 20, 30, 40]), 25.0)
+    def test_math_median_normal_cases(self):
+        """Test math_median with typical number lists."""
+        self.assertAlmostEqual(math_median([1, 2, 3, 4, 5]), 3.0)
+        self.assertAlmostEqual(math_median([1, 2, 3, 4]), 2.5)
+        self.assertAlmostEqual(math_median([5, 1, 3, 2, 4]), 3.0)
+        self.assertAlmostEqual(math_median([10, 20, 30, 40]), 25.0)
 
-    def test_median_edge_cases(self):
-        """Test median with boundary conditions."""
-        self.assertAlmostEqual(median([5]), 5.0)
-        self.assertAlmostEqual(median([1, 2]), 1.5)
-        self.assertAlmostEqual(median([0, 0, 0]), 0.0)
+    def test_math_median_edge_cases(self):
+        """Test math_median with boundary conditions."""
+        self.assertAlmostEqual(math_median([5]), 5.0)
+        self.assertAlmostEqual(math_median([1, 2]), 1.5)
+        self.assertAlmostEqual(math_median([0, 0, 0]), 0.0)
 
-    def test_median_unsorted_input(self):
-        """Test median correctly sorts input before calculating."""
-        self.assertAlmostEqual(median([3, 1, 2]), 2.0)
-        self.assertAlmostEqual(median([10, 5, 15, 20]), 12.5)
-        self.assertAlmostEqual(median([100, 1, 50]), 50.0)
+    def test_math_median_unsorted_input(self):
+        """Test math_median correctly sorts input before calculating."""
+        self.assertAlmostEqual(math_median([3, 1, 2]), 2.0)
+        self.assertAlmostEqual(math_median([10, 5, 15, 20]), 12.5)
+        self.assertAlmostEqual(math_median([100, 1, 50]), 50.0)
 
-    def test_median_negative_numbers(self):
-        """Test median with negative numbers."""
-        self.assertAlmostEqual(median([-5, -10, -15]), -10.0)
-        self.assertAlmostEqual(median([-5, 0, 5]), 0.0)
+    def test_math_median_negative_numbers(self):
+        """Test math_median with negative numbers."""
+        self.assertAlmostEqual(math_median([-5, -10, -15]), -10.0)
+        self.assertAlmostEqual(math_median([-5, 0, 5]), 0.0)
 
-    def test_median_empty_list_raises_error(self):
-        """Test median raises ValueError for empty list."""
+    def test_math_median_empty_list_raises_error(self):
+        """Test math_median raises ValueError for empty list."""
         with self.assertRaises(ValueError):
-            median([])
+            math_median([])
 
-    def test_median_type_error(self):
-        """Test median raises TypeError for non-list inputs."""
+    def test_math_median_type_error(self):
+        """Test math_median raises TypeError for non-list inputs."""
         with self.assertRaises(TypeError):
-            median(5)
+            math_median(5)
         with self.assertRaises(TypeError):
-            median("123")
+            math_median("123")
 
-    def test_mode_normal_cases(self):
-        """Test mode with typical number lists."""
-        self.assertEqual(mode([1, 2, 2, 3, 3, 3]), 3)
-        self.assertEqual(mode([5, 5, 5, 1, 2]), 5)
-        self.assertEqual(mode([1, 1, 2, 2, 3]), 1)
+    def test_math_mode_normal_cases(self):
+        """Test math_mode with typical number lists."""
+        self.assertEqual(math_mode([1, 2, 2, 3, 3, 3]), 3)
+        self.assertEqual(math_mode([5, 5, 5, 1, 2]), 5)
+        self.assertEqual(math_mode([1, 1, 2, 2, 3]), 1)
 
-    def test_mode_edge_cases(self):
-        """Test mode with boundary conditions."""
-        self.assertEqual(mode([5]), 5)
-        self.assertEqual(mode([1, 1]), 1)
-        self.assertEqual(mode([0, 0, 0]), 0)
+    def test_math_mode_edge_cases(self):
+        """Test math_mode with boundary conditions."""
+        self.assertEqual(math_mode([5]), 5)
+        self.assertEqual(math_mode([1, 1]), 1)
+        self.assertEqual(math_mode([0, 0, 0]), 0)
 
-    def test_mode_all_unique(self):
-        """Test mode returns first value when all are unique."""
-        result = mode([1, 2, 3, 4, 5])
+    def test_math_mode_all_unique(self):
+        """Test math_mode returns first value when all are unique."""
+        result = math_mode([1, 2, 3, 4, 5])
         self.assertIn(result, [1, 2, 3, 4, 5])
 
-    def test_mode_negative_numbers(self):
-        """Test mode with negative numbers."""
-        self.assertEqual(mode([-5, -5, -10]), -5)
-        self.assertEqual(mode([-1, -1, -1, 0, 0]), -1)
+    def test_math_mode_negative_numbers(self):
+        """Test math_mode with negative numbers."""
+        self.assertEqual(math_mode([-5, -5, -10]), -5)
+        self.assertEqual(math_mode([-1, -1, -1, 0, 0]), -1)
 
-    def test_mode_empty_list_raises_error(self):
-        """Test mode raises ValueError for empty list."""
+    def test_math_mode_empty_list_raises_error(self):
+        """Test math_mode raises ValueError for empty list."""
         with self.assertRaises(ValueError):
-            mode([])
+            math_mode([])
 
-    def test_mode_type_error(self):
-        """Test mode raises TypeError for non-list inputs."""
+    def test_math_mode_type_error(self):
+        """Test math_mode raises TypeError for non-list inputs."""
         with self.assertRaises(TypeError):
-            mode(5)
+            math_mode(5)
         with self.assertRaises(TypeError):
-            mode("123")
+            math_mode("123")
 
 if __name__ == '__main__':
     unittest.main()
