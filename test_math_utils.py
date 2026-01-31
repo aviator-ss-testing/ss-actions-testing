@@ -1,6 +1,6 @@
 """Comprehensive test suite for math_utils module with normal, edge, and error cases."""
 import unittest
-from math_utils import factorial, fibonacci, is_prime, gcd, lcm, mean, median, mode
+from math_utils import factorial, fibonacci, is_prime, gcd, lcm, math_mean, median, mode
 
 class TestMathUtils(unittest.TestCase):
     """Test cases for mathematical and statistical utility functions."""
@@ -169,39 +169,39 @@ class TestMathUtils(unittest.TestCase):
         with self.assertRaises(TypeError):
             lcm(True, 10)
 
-    def test_mean_normal_cases(self):
-        """Test mean with typical number lists."""
-        self.assertAlmostEqual(mean([1, 2, 3, 4, 5]), 3.0)
-        self.assertAlmostEqual(mean([10, 20, 30]), 20.0)
-        self.assertAlmostEqual(mean([1.5, 2.5, 3.5]), 2.5)
-        self.assertAlmostEqual(mean([100]), 100.0)
+    def test_math_mean_normal_cases(self):
+        """Test math_mean with typical number lists."""
+        self.assertAlmostEqual(math_mean([1, 2, 3, 4, 5]), 3.0)
+        self.assertAlmostEqual(math_mean([10, 20, 30]), 20.0)
+        self.assertAlmostEqual(math_mean([1.5, 2.5, 3.5]), 2.5)
+        self.assertAlmostEqual(math_mean([100]), 100.0)
 
-    def test_mean_edge_cases(self):
-        """Test mean with boundary conditions."""
-        self.assertAlmostEqual(mean([0]), 0.0)
-        self.assertAlmostEqual(mean([1]), 1.0)
-        self.assertAlmostEqual(mean([0, 0, 0]), 0.0)
-        self.assertAlmostEqual(mean([-5, -10, -15]), -10.0)
+    def test_math_mean_edge_cases(self):
+        """Test math_mean with boundary conditions."""
+        self.assertAlmostEqual(math_mean([0]), 0.0)
+        self.assertAlmostEqual(math_mean([1]), 1.0)
+        self.assertAlmostEqual(math_mean([0, 0, 0]), 0.0)
+        self.assertAlmostEqual(math_mean([-5, -10, -15]), -10.0)
 
-    def test_mean_negative_and_positive(self):
-        """Test mean with mixed positive and negative numbers."""
-        self.assertAlmostEqual(mean([-5, 0, 5]), 0.0)
-        self.assertAlmostEqual(mean([-10, 10, -5, 5]), 0.0)
-        self.assertAlmostEqual(mean([1, -1, 2, -2]), 0.0)
+    def test_math_mean_negative_and_positive(self):
+        """Test math_mean with mixed positive and negative numbers."""
+        self.assertAlmostEqual(math_mean([-5, 0, 5]), 0.0)
+        self.assertAlmostEqual(math_mean([-10, 10, -5, 5]), 0.0)
+        self.assertAlmostEqual(math_mean([1, -1, 2, -2]), 0.0)
 
-    def test_mean_empty_list_raises_error(self):
-        """Test mean raises ValueError for empty list."""
+    def test_math_mean_empty_list_raises_error(self):
+        """Test math_mean raises ValueError for empty list."""
         with self.assertRaises(ValueError):
-            mean([])
+            math_mean([])
 
-    def test_mean_type_error(self):
-        """Test mean raises TypeError for non-list inputs."""
+    def test_math_mean_type_error(self):
+        """Test math_mean raises TypeError for non-list inputs."""
         with self.assertRaises(TypeError):
-            mean(5)
+            math_mean(5)
         with self.assertRaises(TypeError):
-            mean("123")
+            math_mean("123")
         with self.assertRaises(TypeError):
-            mean((1, 2, 3))
+            math_mean((1, 2, 3))
 
     def test_median_normal_cases(self):
         """Test median with typical number lists."""

@@ -73,14 +73,14 @@ def lcm(a: int, b: int) -> int:
     if a == 0 or b == 0: return 0
     return abs(a * b) // gcd(a, b)
 
-def mean(numbers: List[float]) -> float:
+def math_mean(numbers: List[float]) -> float:
     """Calculate the arithmetic mean of a list of numbers.
     Args: numbers - A list of numbers
     Returns: The arithmetic mean
     Raises: TypeError if numbers is not a list, ValueError if numbers is empty"""
     if not isinstance(numbers, list):
-        raise TypeError(f"mean() argument must be a list, not {type(numbers).__name__}")
-    if len(numbers) == 0: raise ValueError("mean() requires at least one number")
+        raise TypeError(f"math_mean() argument must be a list, not {type(numbers).__name__}")
+    if len(numbers) == 0: raise ValueError("math_mean() requires at least one number")
     return sum(numbers) / len(numbers)
 
 def median(numbers: List[float]) -> float:
