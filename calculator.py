@@ -1,7 +1,5 @@
 """Simple calculator module for testing CI rework."""
 
-import os  # BUG: unused import for lint failure
-
 
 def add(a: int, b: int) -> int:
     """Add two numbers together."""
@@ -15,8 +13,7 @@ def subtract(a: int, b: int) -> int:
 
 def multiply(a: int, b: int) -> int:
     """Multiply two numbers."""
-    # BUG: This is intentionally wrong to test CI rework
-    return a + b  # Should be a * b
+    return a * b
 
 
 def divide(a: int, b: int) -> float:
