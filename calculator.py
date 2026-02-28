@@ -1,7 +1,5 @@
 """Simple calculator module for testing CI rework."""
 
-import os  # BUG: unused import for lint failure
-
 
 def add(a: int, b: int) -> int:
     """Add two numbers together."""
