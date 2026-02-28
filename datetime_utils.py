@@ -1,7 +1,7 @@
 """Utility functions for common datetime and temporal operations."""
 
-from datetime import date, datetime, timedelta, timezone
-from typing import Optional, Tuple, Union
+from datetime import date, datetime, timedelta
+from typing import Tuple, Union
 
 
 def is_business_day(d: Union[date, datetime]) -> bool:
