@@ -25,4 +25,5 @@ def divide(a: int, b: int) -> float:
 
 def power(base: int, exp: int) -> int:
     """Raise base to the power of exp."""
-    return base**exp
+    result: int = base**exp
+    return result
