@@ -34,3 +34,8 @@ def modulo(a: int, b: int) -> int:
     if b == 0:
         raise ValueError("Cannot divide by zero")
     return a % b
+
+
+def square(n: int) -> int:
+    """Return the square of n."""
+    return n * n
