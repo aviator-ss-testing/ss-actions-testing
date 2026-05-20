@@ -1,0 +1,2 @@
+merge_rules:
+  skip_blocked_label: true
