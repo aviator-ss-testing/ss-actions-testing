@@ -1,8 +1,9 @@
 """Tests for the stats module."""
 
+import json
 import math
 import pytest
-from stats import mean, median, mode, stdev
+from stats import mean, median, mode, stdev, to_json
 
 
 # --- mean ---
@@ -94,3 +95,32 @@ def test_stdev_single_value():
 def test_stdev_empty():
     with pytest.raises(ValueError):
         stdev([])
+
+
+# --- to_json ---
+
+def test_to_json_returns_string():
+    result = to_json([1.0, 2.0, 3.0])
+    assert isinstance(result, str)
+
+
+def test_to_json_contains_all_stats():
+    result = json.loads(to_json([1.0, 2.0, 3.0]))
+    assert "mean" in result
+    assert "median" in result
+    assert "mode" in result
+    assert "stdev" in result
+
+
+def test_to_json_values_correct():
+    result = json.loads(to_json([1.0, 2.0, 3.0]))
+    assert result["mean"] == 2.0
+    assert result["median"] == 2.0
+    assert result["mode"] == 1.0
+    assert math.isclose(result["stdev"], 1.0, rel_tol=1e-9)
+
+
+def test_to_json_single_value_stdev_none():
+    result = json.loads(to_json([5.0]))
+    assert result["mean"] == 5.0
+    assert result["stdev"] is None
