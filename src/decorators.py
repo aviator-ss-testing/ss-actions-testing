@@ -1,3 +1,5 @@
+"""Reusable function decorators: timer, memoize, validate_types, retry, and log_calls."""
+
 import functools
 import time
 from typing import Any, Callable
