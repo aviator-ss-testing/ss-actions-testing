@@ -1,4 +1,9 @@
-"""Reusable function decorators: timer, memoize, validate_types, retry, and log_calls."""
+"""Reusable function decorators: timer, memoize, validate_types, retry, and log_calls.
+
+Note: decorators in this module are not thread-safe. In particular, the memoize cache is a
+plain dict shared across calls and should not be used from multiple threads without external
+locking.
+"""
 
 import functools
 import time
