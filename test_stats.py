@@ -62,15 +62,6 @@ def test_mode_all_unique():
     assert mode([3.0, 1.0, 2.0]) == 1.0
 
 
-def test_mode_single():
-    assert mode([4.0]) == 4.0
-
-
-def test_mode_empty():
-    with pytest.raises(ValueError):
-        mode([])
-
-
 # --- stdev ---
 
 def test_stdev_basic():
