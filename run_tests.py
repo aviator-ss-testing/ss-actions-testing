@@ -13,8 +13,9 @@ import sys
 import unittest
 import argparse
 import time
+import xml.etree.ElementTree as ET
 from io import StringIO
-from typing import List, Optional
+from typing import List, Optional, Union
 
 
 class Colors:
@@ -198,6 +199,61 @@ def load_specific_tests(module_names: List[str]) -> unittest.TestSuite:
             print(f"{Colors.RED}Error loading {name}: {e}{Colors.RESET}")
 
     return suite
+
+
+def to_xml(result: unittest.TestResult, elapsed: float = 0.0) -> str:
+    """Serialise a unittest.TestResult to a JUnit-compatible XML string.
+
+    Args:
+        result: A completed unittest.TestResult (or subclass) instance.
+        elapsed: Total wall-clock time for the run in seconds.
+
+    Returns:
+        A UTF-8 XML string with a <testsuite> root element.
+    """
+    failures = len(result.failures)
+    errors = len(result.errors)
+    skipped = len(result.skipped) if hasattr(result, 'skipped') else 0
+
+    suite = ET.Element('testsuite')
+    suite.set('tests', str(result.testsRun))
+    suite.set('failures', str(failures))
+    suite.set('errors', str(errors))
+    suite.set('skipped', str(skipped))
+    suite.set('time', f'{elapsed:.3f}')
+
+    def _add_case(test: unittest.TestCase, outcome: str, message: str = '') -> ET.Element:
+        case = ET.SubElement(suite, 'testcase')
+        case.set('classname', type(test).__name__)
+        case.set('name', test._testMethodName)
+        if outcome == 'failure':
+            child = ET.SubElement(case, 'failure')
+            child.set('message', message.splitlines()[0] if message else '')
+            child.text = message
+        elif outcome == 'error':
+            child = ET.SubElement(case, 'error')
+            child.set('message', message.splitlines()[0] if message else '')
+            child.text = message
+        elif outcome == 'skipped':
+            child = ET.SubElement(case, 'skipped')
+            child.set('message', message)
+        return case
+
+    for test, msg in result.failures:
+        _add_case(test, 'failure', msg)
+
+    for test, msg in result.errors:
+        _add_case(test, 'error', msg)
+
+    if hasattr(result, 'skipped'):
+        for test, reason in result.skipped:
+            _add_case(test, 'skipped', reason)
+
+    tree = ET.ElementTree(suite)
+    ET.indent(tree, space='  ')
+    buf = StringIO()
+    tree.write(buf, encoding='unicode', xml_declaration=True)
+    return buf.getvalue()
 
 
 def main():
