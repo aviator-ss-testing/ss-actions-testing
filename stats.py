@@ -1,5 +1,6 @@
 """Basic descriptive statistics using only the Python standard library."""
 
+import json
 import math
 from collections import Counter
 
@@ -36,3 +37,14 @@ def stdev(values: list[float]) -> float:
     m = mean(values)
     variance = sum((x - m) ** 2 for x in values) / (len(values) - 1)
     return math.sqrt(variance)
+
+
+def to_json(data: list[float]) -> str:
+    """Serialise computed statistics for data to a JSON string."""
+    result = {
+        "mean": mean(data),
+        "median": median(data),
+        "mode": mode(data),
+        "stdev": stdev(data) if len(data) >= 2 else None,
+    }
+    return json.dumps(result)
