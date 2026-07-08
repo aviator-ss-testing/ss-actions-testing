@@ -2,6 +2,12 @@ import functools
 import time
 from typing import Any, Callable
 
+try:
+    import yaml as _yaml
+    _has_yaml = True
+except ImportError:
+    _has_yaml = False
+
 
 def timer(func: Callable) -> Callable:
     """
@@ -162,3 +168,61 @@ def log_calls(func: Callable) -> Callable:
         print(f"{func.__name__} returned {result!r}")
         return result
     return wrapper
+
+
+def _yaml_dump(data: Any, indent: int = 0) -> str:
+    prefix = "  " * indent
+    if data is None:
+        return "null\n"
+    if isinstance(data, bool):
+        return ("true" if data else "false") + "\n"
+    if isinstance(data, (int, float)):
+        return f"{data}\n"
+    if isinstance(data, str):
+        if any(c in data for c in (':', '#', '{', '}', '[', ']', ',', '&', '*', '?', '|', '-', '<', '>', '=', '!', '%', '@', '`')):
+            escaped = data.replace("'", "''")
+            return f"'{escaped}'\n"
+        return f"{data}\n"
+    if isinstance(data, dict):
+        if not data:
+            return "{}\n"
+        lines = []
+        for k, v in data.items():
+            val = _yaml_dump(v, indent + 1)
+            if isinstance(v, (dict, list)) and v:
+                lines.append(f"{prefix}{k}:\n{val}")
+            else:
+                lines.append(f"{prefix}{k}: {val.rstrip()}\n")
+        return "".join(lines)
+    if isinstance(data, (list, tuple)):
+        if not data:
+            return "[]\n"
+        lines = []
+        for item in data:
+            val = _yaml_dump(item, indent + 1)
+            if isinstance(item, (dict, list)) and item:
+                lines.append(f"{prefix}-\n{val}")
+            else:
+                lines.append(f"{prefix}- {val.rstrip()}\n")
+        return "".join(lines)
+    return f"{data!r}\n"
+
+
+def export_to_yaml(data: Any, stream=None) -> str:
+    """
+    Serialise results to YAML.
+
+    Args:
+        data: The data to serialise (dict, list, or any YAML-serialisable value)
+        stream: Optional file-like object to write to; if None, returns a string
+
+    Returns:
+        YAML string representation of data when stream is None, otherwise None
+    """
+    if _has_yaml:
+        return _yaml.dump(data, stream=stream, default_flow_style=False)
+    yaml_str = _yaml_dump(data)
+    if stream is not None:
+        stream.write(yaml_str)
+        return None
+    return yaml_str
