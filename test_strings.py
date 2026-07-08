@@ -6,6 +6,7 @@ from strings import (
     is_anagram,
     is_palindrome,
     reverse,
+    to_base64,
     truncate,
 )
 
@@ -57,3 +58,9 @@ def test_truncate():
 def test_truncate_negative_max_len():
     with pytest.raises(ValueError, match="max_len must be non-negative"):
         truncate("hello", -1)
+
+
+def test_to_base64():
+    assert to_base64("hello") == "aGVsbG8="
+    assert to_base64("") == ""
+    assert to_base64("Man") == "TWFu"
