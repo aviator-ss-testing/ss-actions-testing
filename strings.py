@@ -1,4 +1,5 @@
 """String utility functions."""
+import base64
 import re
 
 
@@ -40,3 +41,8 @@ def truncate(s: str, max_len: int, suffix: str = "...") -> str:
     if max_len <= len(suffix):
         return suffix[:max_len]
     return s[: max_len - len(suffix)] + suffix
+
+
+def to_base64(s: str) -> str:
+    """Return the Base64 encoding of the input string."""
+    return base64.b64encode(s.encode()).decode()
