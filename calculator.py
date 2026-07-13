@@ -30,7 +30,7 @@ def power(base: int, exp: int) -> int:
 
 
 def modulo(a: int, b: int) -> int:
-    """Return the remainder of a divided by b."""
+    """Return a modulo b."""
     if b == 0:
         raise ValueError("Cannot modulo by zero")
     return a % b
