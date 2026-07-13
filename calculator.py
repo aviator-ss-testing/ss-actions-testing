@@ -27,3 +27,10 @@ def power(base: int, exp: int) -> int:
     """Raise base to the power of exp."""
     result: int = base**exp
     return result
+
+
+def gcd(a: int, b: int) -> int:
+    """Return the greatest common divisor of a and b."""
+    while b:
+        a, b = b, a % b
+    return abs(a)
