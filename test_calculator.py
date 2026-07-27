@@ -1,6 +1,6 @@
 """Tests for the calculator module."""
 import pytest
-from calculator import add, subtract, multiply, divide
+from calculator import add, subtract, multiply, divide, modulo
 
 
 def test_add():
@@ -35,3 +35,14 @@ def test_divide_by_zero():
     """Test division by zero raises error."""
     with pytest.raises(ValueError, match="Cannot divide by zero"):
         divide(5, 0)
+
+
+def test_modulo():
+    """Test modulo operation."""
+    assert modulo(10, 3) == 1
+
+
+def test_modulo_by_zero():
+    """Test modulo by zero raises error."""
+    with pytest.raises(ValueError, match="Cannot divide by zero"):
+        modulo(5, 0)

@@ -27,3 +27,10 @@ def power(base: int, exp: int) -> int:
     """Raise base to the power of exp."""
     result: int = base**exp
     return result
+
+
+def modulo(a: int, b: int) -> int:
+    """Return the remainder of a divided by b."""
+    if b == 0:
+        raise ValueError("Cannot divide by zero")
+    return a % b
