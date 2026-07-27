@@ -1,6 +1,6 @@
 """Tests for the calculator module."""
 import pytest
-from calculator import add, subtract, multiply, divide
+from calculator import add, subtract, multiply, divide, power
 
 
 def test_add():
@@ -29,6 +29,16 @@ def test_divide():
     assert divide(6, 2) == 3.0
     assert divide(5, 2) == 2.5
     assert divide(0, 5) == 0.0
+
+
+def test_power():
+    """Test power operation."""
+    assert power(2, 3) == 8
+    assert power(5, 0) == 1
+    assert power(0, 3) == 0
+    assert power(4, 1) == 4
+    assert power(-2, 2) == 4
+    assert power(-2, 3) == -8
 
 
 def test_divide_by_zero():
