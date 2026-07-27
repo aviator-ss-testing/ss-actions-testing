@@ -1,6 +1,6 @@
 """Tests for the calculator module."""
 import pytest
-from calculator import add, subtract, multiply, divide, modulo
+from calculator import add, divide, modulo, multiply, subtract
 
 
 def test_add():
