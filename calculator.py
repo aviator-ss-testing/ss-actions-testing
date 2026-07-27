@@ -23,6 +23,13 @@ def divide(a: int, b: int) -> float:
     return a / b
 
 
+def modulo(a: int, b: int) -> int:
+    """Return the remainder of dividing a by b."""
+    if b == 0:
+        raise ValueError("Cannot take modulo by zero")
+    return a % b
+
+
 def power(base: int, exp: int) -> int:
     """Raise base to the power of exp."""
     result: int = base**exp
