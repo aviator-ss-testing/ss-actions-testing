@@ -1,0 +1,11 @@
+{
+  "name": "aviator",
+  "description": "Aviator MCP tools for runbooks and workflow automation",
+  "version": "1.0.0",
+  "author": {
+    "name": "Aviator"
+  },
+  "homepage": "https://aviator.co",
+  "repository": "https://github.com/aviator-co/aviator",
+  "license": "MIT"
+}
